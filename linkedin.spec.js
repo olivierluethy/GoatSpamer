@@ -27,11 +27,18 @@ async function randomScroll(page) {
 
   const page = await context.newPage();
 
-  // ❗ COOKIE HIER EINSETZEN
+  // ❗ COOKIE aus Umgebungsvariable LI_AT laden (nicht hardcoden!)
+  const liAt = process.env.LI_AT;
+  if (!liAt) {
+    console.error('❌ Umgebungsvariable LI_AT ist nicht gesetzt. Beispiel: LI_AT="dein_cookie" node linkedin.spec.js');
+    await context.close();
+    process.exit(1);
+  }
+
   await context.addCookies([
     {
       name: 'li_at',
-      value: 'AQEDAV214QkAiy3oAAABnQVCWa0AAAGdTVff-VYAKgoDisKhhg9pDK56VzlIWLWGLFvP7L36cMcOFR_94zobaiUtpX5WfcG1Y57M9X8asymBebn3bKQoZkrrr-FKfJUme-njb7TCrfku8pyvbYcbL0BF', // 👈 HIER EINFÜGEN
+      value: liAt,
       domain: '.linkedin.com',
       path: '/',
       httpOnly: true,
